@@ -5,13 +5,12 @@ import { removeContactAction } from './../../redux/contacts';
 export const ContactItem = ({ contact }) => {
   const dispatch = useDispatch();
 
-  const onDeleteContact = e =>
-    dispatch(removeContactAction(e.currentTarget.id));
+  const onDeleteContact = () => dispatch(removeContactAction(contact.id));
 
   return (
     <Item>
       {contact.name}: {contact.number}
-      <ButtonDelete type="button" id={contact.id} onClick={onDeleteContact}>
+      <ButtonDelete type="button" onClick={onDeleteContact}>
         Delete
       </ButtonDelete>
     </Item>
