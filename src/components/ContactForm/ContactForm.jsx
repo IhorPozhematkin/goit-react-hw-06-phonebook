@@ -1,6 +1,9 @@
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import 'yup-phone-lite';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContactAction } from './../../redux/contacts';
+import { getContacts } from './../../redux/selectors';
 import {
   ButtonSubmit,
   ErrorMessageStyled,
@@ -23,7 +26,24 @@ const schema = yup.object().shape({
     .required('A phone number is required'),
 });
 
-export const ContactForm = ({ addContact }) => {
+export const ContactForm = () => {
+  const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
+
+  const addContact = newContact => {
+    const isExist = contacts.find(
+      contact =>
+        contact.name.toLowerCase() === newContact.name.toLowerCase().trim()
+    );
+
+    if (isExist) {
+      alert(`${newContact.name} is already in contacts`);
+      return;
+    }
+
+    dispatch(addContactAction(newContact));
+  };
+
   const handleSubmit = (values, { resetForm }) => {
     addContact(values);
     resetForm();
